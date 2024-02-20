@@ -12,11 +12,11 @@ describe("Command class", function() {
   it("constructor sets command type", function() {
     let commandTypeTest = new Command('MODE_CHANGE', 12000);
     expect(commandTypeTest.commandType).toBe('MODE_CHANGE')
-  })
+  });
 
   it("constructor sets a value passed in as the 2nd argument", function () {
     let valueTest = new Command('MODE_CHANGE', 12000); 
     expect(valueTest.value).toEqual(12000); 
-  })
+  });
 
 });
