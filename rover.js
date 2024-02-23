@@ -18,10 +18,10 @@ class Rover {
 
 let commandResponse = function(commands){
    let resultsArray = [];
-   let resultsObject = {
-      completed: null, 
-   }
    for (i = 0; i < commands.length; i++){
+      let resultsObject = {
+         completed: null
+      }
       if (commands[i].commandType === 'MOVE') {
          if (this.mode === 'LOW_POWER') {
             resultsObject.completed = false; 
@@ -46,7 +46,7 @@ let commandResponse = function(commands){
          if (commands[i].value = 'LOW_POWER') {
             resultsObject.completed = true;
             this.mode = 'LOW_POWER';
-         } else if (commands[i].value = 'LOW_POWER') {
+         } else if (commands[i].value = 'NORMAL') {
             resultsObject.completed = true; 
             this.mode = 'NORMAL';
          } else {
