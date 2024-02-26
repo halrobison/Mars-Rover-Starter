@@ -16,7 +16,7 @@ class Rover {
    }
 }
 
-let commandResponse = function(commands){
+let commandResponse = function(commands) {
    let resultsArray = [];
    for (i = 0; i < commands.length; i++){
       let resultsObject = {
@@ -31,18 +31,18 @@ let commandResponse = function(commands){
             this.position = commands[i].value;
             resultsArray.push(resultsObject);
          }
-      }
-      if (commands[i].commandType === 'STATUS_CHECK') {
+      } else if (commands[i].commandType === 'STATUS_CHECK') {
          resultsObject.completed = true;
-         let updatedResults = {
+         // this.generatorWatts = 110; 
+         // this.position = commands[3].value;
+         updatedResults = {
             'mode': this.mode, 
             'generatorWatts': this.generatorWatts, 
             'position': this.position
          }
          resultsObject['roverStatus'] = updatedResults
          resultsArray.push(resultsObject)
-      }
-      if (commands[i].commandType === 'MODE_CHANGE') {
+      } else if (commands[i].commandType === 'MODE_CHANGE') {
          if (commands[i].value = 'LOW_POWER') {
             resultsObject.completed = true;
             this.mode = 'LOW_POWER';

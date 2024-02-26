@@ -36,7 +36,7 @@ describe("Rover class", function() {
     let message = new Message('Status check', commands);
     let roverTest = new Rover(98382); 
     let response = roverTest.receiveMessage(message); 
-    expect(response.results).toBe([{completed: true, roverStatus: 'Status good'}])
+    expect(response.results).toBe([{completed: true, roverStatus: {generatorWatts: 110, mode: "LOW_POWER", position: 98382}}])
   })
 
 });
