@@ -2,60 +2,45 @@ const Message = require('./message.js');
 const Command = require('./command.js');
 
 class Rover {
-   constructor(position){
-      this.position = position;
-      this.mode = 'NORMAL'; 
-      this.generatorWatts = 110; 
+   constructor(position) {
+       this.position = position;
+       this.mode = 'NORMAL';
+       this.generatorWatts = 110;
    }
-   receiveMessage = function(message){
-      let returnObject = {
-         message: message.name,
-         results: commandResponse(message.commands)
-      }
-      return returnObject;
-   }
-}
 
-let commandResponse = function(commands) {
-   let resultsArray = [];
-   for (i = 0; i < commands.length; i++){
-      let resultsObject = {
-         completed: null
-      }
-      if (commands[i].commandType === 'MOVE') {
-         if (this.mode === 'LOW_POWER') {
-            resultsObject.completed = false; 
-            resultsArray.push(resultsObject);
-         } else {
-            resultsObject.completed = true; 
-            this.position = commands[i].value;
-            resultsArray.push(resultsObject);
-         }
-      } else if (commands[i].commandType === 'STATUS_CHECK') {
-         resultsObject.completed = true;
-         // this.generatorWatts = 110; 
-         // this.position = commands[3].value;
-         updatedResults = {
-            'mode': this.mode, 
-            'generatorWatts': this.generatorWatts, 
-            'position': this.position
-         }
-         resultsObject['roverStatus'] = updatedResults
-         resultsArray.push(resultsObject)
-      } else if (commands[i].commandType === 'MODE_CHANGE') {
-         if (commands[i].value = 'LOW_POWER') {
-            resultsObject.completed = true;
-            this.mode = 'LOW_POWER';
-         } else if (commands[i].value = 'NORMAL') {
-            resultsObject.completed = true; 
-            this.mode = 'NORMAL';
-         } else {
-            resultsObject.completed = false;
-         }
-         resultsArray.push(resultsObject)
-      }
+   receiveMessage(message) {
+       const results = [];
+       for (const command of message.commands) {
+           let result = {};
+           if (command.commandType === 'MOVE') {
+               if (this.mode === 'LOW_POWER') {
+                   result.completed = false;
+               } else {
+                   this.position = command.value;
+                   result.completed = true;
+               }
+           } else if (command.commandType === 'STATUS_CHECK') {
+               result.completed = true;
+               result.roverStatus = {
+                   mode: this.mode,
+                   generatorWatts: this.generatorWatts,
+                   position: this.position
+               };
+           } else if (command.commandType === 'MODE_CHANGE') {
+               if (command.value === 'LOW_POWER' || command.value === 'NORMAL') {
+                   this.mode = command.value;
+                   result.completed = true;
+               } else {
+                   result.completed = false;
+               }
+           }
+           results.push(result);
+       }
+       return {
+           message: message.name,
+           results: results
+       };
    }
-   return resultsArray;
 }
 
 module.exports = Rover;
